@@ -80,6 +80,36 @@ func removeOpencodeMessageBox(msg string) string {
 	return strings.Join(lines, "\n")
 }
 
+// removeOpenClawMessageBox removes the OpenClaw TUI input box.
+// OpenClaw TUI has a chat input area at the bottom with borders like:
+//   ┌──────────────────────────────────────────────────────────────┐
+//   │ >                                                           │
+//   └──────────────────────────────────────────────────────────────┘
+// Or the "🦞" lobster prompt indicator.
+func removeOpenClawMessageBox(msg string) string {
+	lines := strings.Split(msg, "\n")
+	// Search from the bottom for the input box pattern
+	for i := len(lines) - 1; i >= max(len(lines)-8, 0); i-- {
+		line := strings.TrimSpace(lines[i])
+		// OpenClaw TUI footer with lobster emoji or border
+		if strings.HasPrefix(line, "└") && strings.HasSuffix(line, "┘") {
+			// Find matching top border
+			for j := i - 1; j >= max(i-4, 0); j-- {
+				jLine := strings.TrimSpace(lines[j])
+				if strings.HasPrefix(jLine, "┌") && strings.HasSuffix(jLine, "┐") {
+					return strings.Join(lines[:j], "\n")
+				}
+			}
+			return strings.Join(lines[:i], "\n")
+		}
+		// Also handle the "🦞" prompt line
+		if strings.Contains(line, "🦞") && (strings.Contains(line, ">") || strings.Contains(line, "│")) {
+			return strings.Join(lines[:i], "\n")
+		}
+	}
+	return msg
+}
+
 func removeAmpMessageBox(msg string) string {
 	lines := strings.Split(msg, "\n")
 	msgBoxEndFound := false

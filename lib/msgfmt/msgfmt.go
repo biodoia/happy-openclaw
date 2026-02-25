@@ -244,6 +244,7 @@ const (
 	AgentTypeAuggie   AgentType = "auggie"
 	AgentTypeAmazonQ  AgentType = "amazonq"
 	AgentTypeOpencode AgentType = "opencode"
+	AgentTypeOpenClaw AgentType = "openclaw"
 	AgentTypeCustom   AgentType = "custom"
 )
 
@@ -275,6 +276,13 @@ func formatAmpMessage(message string, userInput string) string {
 	return message
 }
 
+func formatOpenClawMessage(message string, userInput string) string {
+	message = RemoveUserInput(message, userInput, AgentTypeOpenClaw)
+	message = removeOpenClawMessageBox(message)
+	message = trimEmptyLines(message)
+	return message
+}
+
 func FormatAgentMessage(agentType AgentType, message string, userInput string) string {
 	switch agentType {
 	case AgentTypeClaude:
@@ -299,6 +307,8 @@ func FormatAgentMessage(agentType AgentType, message string, userInput string) s
 		return formatGenericMessage(message, userInput, agentType)
 	case AgentTypeOpencode:
 		return formatOpencodeMessage(message, userInput)
+	case AgentTypeOpenClaw:
+		return formatOpenClawMessage(message, userInput)
 	case AgentTypeCustom:
 		return formatGenericMessage(message, userInput, agentType)
 	default:

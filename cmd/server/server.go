@@ -37,6 +37,7 @@ const (
 	AgentTypeAuggie   AgentType = msgfmt.AgentTypeAuggie
 	AgentTypeAmazonQ  AgentType = msgfmt.AgentTypeAmazonQ
 	AgentTypeOpencode AgentType = msgfmt.AgentTypeOpencode
+	AgentTypeOpenClaw AgentType = msgfmt.AgentTypeOpenClaw
 	AgentTypeCustom   AgentType = msgfmt.AgentTypeCustom
 )
 
@@ -55,6 +56,8 @@ var agentTypeAliases = map[string]AgentType{
 	"q":            AgentTypeAmazonQ,
 	"amazonq":      AgentTypeAmazonQ,
 	"opencode":     AgentTypeOpencode,
+	"openclaw":     AgentTypeOpenClaw,
+	"clawbot":      AgentTypeOpenClaw,
 	"custom":       AgentTypeCustom,
 }
 
